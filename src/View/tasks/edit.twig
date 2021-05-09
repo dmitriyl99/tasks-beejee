@@ -1,0 +1,29 @@
+{% extends 'layouts/app.twig' %}
+{% block title %}Изменить задачу №{{ task.id }}{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="display-6 border-bottom">Изменить задачу №{{ task.id }}</h1>
+
+        <div class="d-flex justify-content-center mt-5">
+            <form action="/tasks/{{ task.id }}" method="post" style="width: 40%;">
+                <div class="mb-3">
+                    <label for="userName" class="form-label">Кому?</label>
+                    <input type="text" class="form-control" value="{{ task.userName }}" id="userName" name="userName" aria-describedby="userNameHelp" required>
+                    <div id="userNameHelp" class="form-text">Введите имя пользователя</div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" value="{{ task.email }}" name="email" id="email" required>
+                    <div id="emailHelp" class="form-text">Укажеите e-mail пользователя</div>
+                </div>
+                <div class="mb-3">
+                    <label for="text" class="form-label">Текст</label>
+                    <textarea name="text" id="text" rows="5" class="form-control" required>{{ task.text }}</textarea>
+                    <div id="emailHelp" class="form-text">Введите текст задачи</div>
+                </div>
+                <button type="submit" class="btn btn-primary">Cохранить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'layouts/app.twig' %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="display-6 border-bottom">Вход</h1>
+        <div class="d-flex justify-content-center mt-5">
+            <form action="" method="post" class="w-25">
+                {% if errors %}
+                    <ul>
+                        {% for error in errors %}
+                            <li class="text-danger">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="mb-3">
+                    <label for="login" class="form-label">Логин</label>
+                    <input type="text" name="login" class="form-control" id="login" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Пароль</label>
+                    <input type="password" name="password" class="form-control" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Вход</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

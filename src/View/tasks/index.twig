@@ -1,0 +1,98 @@
+{% extends 'layouts/app.twig' %}
+{% block title %}Список задач{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="display-6 border-bottom">Список задач</h1>
+        <form action="/" class="row row-cols-lg-auto g-3 align-items-center mt-2" method="get">
+            <div class="col-12">
+                <label for="sort_name" class="">Имя пользователя</label>
+                <select class="form-select" id="sort_name" name="sort_name">
+                    <option selected value="">-</option>
+                    <option value="asc" {% if sorting['userName'] == 'asc' %} selected {% endif %}>По возрастанию </option>
+                    <option value="desc" {% if sorting['userName'] == 'desc' %} selected {% endif %}>По убыванию</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label for="sort_email" class="">E-mail</label>
+                <select class="form-select" id="sort_email" name="sort_email">
+                    <option selected value="">-</option>
+                    <option value="asc" {% if sorting['email'] == 'asc' %} selected {% endif %}>По возрастанию</option>
+                    <option value="desc" {% if sorting['email'] == 'desc' %} selected {% endif %}>По убыванию</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label for="sort_status" class="">Статус</label>
+                <select class="form-select" id="sort_status" name="sort_status">
+                    <option selected value="">-</option>
+                    <option value="asc" {% if sorting['status'] == 'asc' %} selected {% endif %}>Сначала не выполненные</option>
+                    <option value="desc" {% if sorting['status'] == 'desc' %} selected {% endif %}>Сначала выполненные</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary mt-md-0 mt-lg-4">Сортировать</button>
+            </div>
+        </form>
+        <div class="row mt-4">
+            {% for task in tasks %}
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                    <div class="card mt-sm-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">{{ task.userName }}</h5>
+                                {% if task.modified %}
+                                    <span class="text-warning">Отредактировано администратором</span>
+                                {% endif %}
+                            </div>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ task.email }}</h6>
+                            <p class="card-text">{{ task.text }}</p>
+                            {% if authenticated %}
+                                <div class="d-flex justify-content-between">
+                                    <a href="/tasks/{{ task.id }}/edit" class="btn btn-primary">Редактировать</a>
+                                    {% if not task.done %}
+                                        <form action="/tasks/{{ task.id }}/done" method="post">
+                                            <button type="submit" class="btn btn-success" title="Завершить">&check;</button>
+                                        </form>
+                                        {% else %}
+                                            <span class="text-success">Выполнено</span>
+                                    {% endif %}
+                                </div>
+                                {% else %}
+                                <div class="d-flex justify-content-end">
+                                    {% if task.done %}
+                                        <span class="text-success">Выполнено</span>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                    <p class="display-6 text-center">Задач ещё нет</p>
+            {% endfor %}
+        </div>
+        {% if paginator.total > 1 %}
+        <nav class="mt-4 d-flex justify-content-center">
+            <ul class="pagination">
+                {% if paginator.prev != 0 %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ paginator.prev }}{% if paginator.queryParams %}&{{ paginator.queryParams }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for i in 1..paginator.total %}
+                    <li class="page-item {% if paginator.page == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}{% if paginator.queryParams %}&{{ paginator.queryParams }}{% endif %}">{{ i }}</a></li>
+                {% endfor %}
+                {% if paginator.page != paginator.total %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ paginator.next }}{% if paginator.queryParams %}&{{ paginator.queryParams }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+{% endblock %}
