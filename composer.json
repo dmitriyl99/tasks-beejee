@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "ext-pdo_sqlite": "*",
         "doctrine/orm": "^2.6.2",
         "league/route": "^5.0",
         "laminas/laminas-diactoros": "^2.5",
