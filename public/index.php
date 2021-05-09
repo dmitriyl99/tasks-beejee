@@ -1,9 +1,9 @@
 <?php
 
-require_once 'bootstrap/bootstrap.php';
+require_once '../bootstrap/bootstrap.php';
 
 /** @var \League\Route\Router $router */
-$router = require_once 'routes/routes.php';
+$router = require_once '../routes/routes.php';
 
 $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
     $_SERVER, $_GET, $_POST, $_COOKIE, $_FILES
